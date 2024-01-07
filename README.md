@@ -1,6 +1,7 @@
 # Portfolio using React js and styled-components 2023
 
-## Tutorial Video Link
+## Here's a deployed Portfolio Link:
+https://hamzasportfolio.netlify.app/
 
 ## Features
 Animated navbar
