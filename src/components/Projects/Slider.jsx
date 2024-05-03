@@ -5,18 +5,26 @@ import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import styled from 'styled-components';
 
 let data = [
-    {
+
+  {
         img :require("../../assets/images/p1.PNG"),
         title:'Scholarship Portal',
         disc : "An integrated MERN-Stack web platform for scholarships for students of NEDUET with a dedicated Admin panel",
         sourceCode:"https://github.com/Team-Secant/ScholarshipPortal/tree/shirazdev"
     },
     {
+      img :require("../../assets/images/p8.png"),
+      title:'WebSocket Chatrooms',
+      disc : "A scalable chatting platform where multiple users can join ChatRoom(s) and send messages in real-time",
+      sourceCode:"https://github.com/HamzaAhmedKhan15/Websocket-basics"
+  },
+    {
       img :require("../../assets/images/p4.PNG"),
       title:'RCAI Website Replica',
         disc : "An integrated full-stack website designed for AIFEST4.0 WebDev Competition",
         sourceCode:"https://github.com/HamzaAhmedKhan15/AI-FEST-23-WebDevCompetition-TeamWebSlingers"
     },
+   
     {
       img :require("../../assets/images/NETFLIX-homepage-1140x570.png"),
       title:'Netflix Replica',
