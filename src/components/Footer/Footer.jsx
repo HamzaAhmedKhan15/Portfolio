@@ -4,13 +4,13 @@ import { MdAlternateEmail } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 import { HiOutlineMailOpen } from "react-icons/hi";
 import { AiFillGithub, AiFillLinkedin, AiOutlineArrowUp } from "react-icons/ai";
-import { BsFacebook} from "react-icons/bs";
+import { BsFacebook } from "react-icons/bs";
 import { FiMail, FiPhoneCall } from "react-icons/fi";
 import { Slide, Zoom, Fade } from "react-awesome-reveal";
 import { IoLocationOutline } from "react-icons/io5";
 import foot from "../../assets/images/giff.gif";
-import '../../assets/css/mycss.css';
-import 'animate.css';
+import "../../assets/css/mycss.css";
+import "animate.css";
 
 const Footer = () => {
   const scrollUp = () => {
@@ -23,70 +23,90 @@ const Footer = () => {
     <Container id="footer">
       <Profile>
         <Slide direction="left" delay={1}>
-          <h1>Contact <span className="green">Me</span></h1> <br /> <br />
+          <h1>
+            Contact <span className="green">Me</span>
+          </h1>{" "}
+          <br /> <br />
         </Slide>
         <div className="links">
           <div>
-            <Slide direction="left" style={{paddingBottom:'5px'}}>
+            <Slide direction="left" style={{ paddingBottom: "5px" }}>
               <span>
                 <HiOutlineMailOpen />
               </span>
             </Slide>
             <Slide>
-            <p><b>Email:</b> hamzaahmedkhan718@gmail.com</p> <br /><br />
+              <p>
+                <b>Email:</b> hamzaahmedkhan718@gmail.com
+              </p>{" "}
+              <br />
+              <br />
             </Slide>
           </div>
           <div>
             <span>
               <FiPhoneCall />
             </span>
-            <Slide direction="left" style={{paddingBottom:'5px'}}>
-            <p><b>Contact:</b> 0300-8263067</p>
+            <Slide direction="left" style={{ paddingBottom: "5px" }}>
+              <p>
+                <b>Contact:</b> 0300-8263067
+              </p>
             </Slide>
           </div>
           <div>
             <span>
-              <IoLocationOutline  />
+              <IoLocationOutline />
             </span>
             <Slide direction="left">
-            <p><b>Location:</b> Karachi, Pakistan</p>
+              <p>
+                <b>Location:</b> Karachi, Pakistan
+              </p>
             </Slide>
           </div>
         </div>
         <div className="profiles">
-          <Slide direction="left"><br />
+          <Slide direction="left">
+            <br />
             <h1 className="green">Check my profiles</h1>
           </Slide>
           <div className="icons">
             <Zoom>
               <span>
                 <a href="https://github.com/HamzaAhmedKhan15">
-                  <AiFillGithub style={{ fontSize: "1.5rem" }}/>
+                  <AiFillGithub style={{ fontSize: "1.5rem" }} />
                 </a>
               </span>
             </Zoom>
             <Zoom>
               <span>
                 <a href="https://www.linkedin.com/in/hamza-ahmed-khan-/">
-                  <AiFillLinkedin style={{ fontSize: "1.5rem" }}/>
+                  <AiFillLinkedin style={{ fontSize: "1.5rem" }} />
                 </a>
               </span>
             </Zoom>
             <Zoom>
               <span>
                 <a href="https://www.facebook.com/profile.php?id=100007366266108">
-                  <BsFacebook style={{ fontSize: "1.5rem" }}/>
+                  <BsFacebook style={{ fontSize: "1.5rem" }} />
                 </a>
               </span>
             </Zoom>
-                <button className="button-container2"><a href="https://mail.google.com/mail/?view=cm&to=hamzaahmedkhan718@gmail.com" target="_blank"> Send Email </a></button>
+            <button className="button-container2">
+              <a
+                href="https://mail.google.com/mail/?view=cm&to=hamzaahmedkhan718@gmail.com"
+                target="_blank"
+              >
+                {" "}
+                Send Email{" "}
+              </a>
+            </button>
           </div>
         </div>
       </Profile>
       <Form>
         <MediaQueryWrapper>
-        <img src={foot} alt="" />
-    </MediaQueryWrapper>
+          <img src={foot} alt="" style={{ width: "65%", marginLeft:"60px", marginTop:"-40px" }} />
+        </MediaQueryWrapper>
       </Form>
       <Fade>
         <div className="side-by-side">
@@ -95,7 +115,7 @@ const Footer = () => {
           </ArrowUp>
         </div>
       </Fade>
-    </Container> 
+    </Container>
   );
 };
 
@@ -105,13 +125,11 @@ export default Footer;
 
 // Styled component for media query
 const MediaQueryWrapper = styled.div`
-
-img{
-  margin-left:10px;
-}
+  img {
+    margin-left: 10px;
+  }
   @media (max-width: 768px) {
     img {
-      
       width: 100%; /* For example, make the image take the full width */
     }
   }
@@ -165,7 +183,7 @@ const Profile = styled.div`
       a {
         text-decoration: none;
         color: lightgray;
-        padding:5px;
+        padding: 5px;
         :hover {
           color: #01be96;
         }
@@ -265,7 +283,7 @@ const Form = styled.div`
       width: 8rem;
       height: 1.8rem;
       background-color: #01be96;
-      color:white;
+      color: white;
       border: none;
       border-radius: 5px;
       filter: drop-shadow(0px 4px 5px #01be9551);
