@@ -6,6 +6,7 @@ import Projects from "./components/Projects/Projects";
 import Services from "./components/Service/Services";
 import Certifications from "./components/Certifications/Certifications";
 import Aboutme from "./components/About/About";
+
 function App() {
   return (
     // <LightColor>
