@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { FaDiceD20 } from "react-icons/fa";
 import '../../assets/css/mycss.css';
 import "../../index.css";
-import Signature from "../../assets/images/signature.png"
+import Signature from "../../assets/images/signature.png";
+import resumeLogo from "../../assets/images/download.png"
 
 const Header = () => {
     const [bar, setBar] = useState(false);
@@ -33,15 +34,25 @@ const Header = () => {
     </a>
   </div>
     {isMobileView ? (
-      <ResumeButton>
-        <a
-          href="/Hamza-Resume.pdf"
-          download="Hamza-Resume"
-          className="download-link"
-        >
-          <button>Resume</button>
-        </a>
-      </ResumeButton>
+     <ResumeButton>
+     <a
+       href="/Hamza-Resume.pdf"
+       download="Hamza-Resume"
+       className="download-link"
+     >
+       <button style={{ display: 'flex', alignItems: 'center' }}>
+         Resume
+
+         <img
+           src={resumeLogo}
+           alt="Resume Logo"
+           style={{ width: '15px', height: '15px', marginLeft: '8px' }} // Adjust size and spacing as needed
+         />
+
+       </button>
+     </a>
+   </ResumeButton>
+   
     ) : (
       <Nav bar={bar}>
         <span>

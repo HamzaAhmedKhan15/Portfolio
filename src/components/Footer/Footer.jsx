@@ -9,6 +9,7 @@ import { FiMail, FiPhoneCall } from "react-icons/fi";
 import { Slide, Zoom, Fade } from "react-awesome-reveal";
 import { IoLocationOutline } from "react-icons/io5";
 import foot from "../../assets/images/giff.gif";
+import emailLogo from "../../assets/images/gmail.png"
 import "../../assets/css/mycss.css";
 import "animate.css";
 
@@ -92,14 +93,22 @@ const Footer = () => {
               </span>
             </Zoom>
             <button className="button-container2">
-              <a
-                href="https://mail.google.com/mail/?view=cm&to=hamzaahmedkhan718@gmail.com"
-                target="_blank"
-              >
-                {" "}
-                Send Email{" "}
-              </a>
-            </button>
+  <a
+    href="https://mail.google.com/mail/?view=cm&to=hamzaahmedkhan718@gmail.com"
+    target="_blank"
+    rel="noopener noreferrer"
+    style={{ display: 'flex', alignItems: 'center' }} // Optional, for better alignment
+  >
+    Send Email
+
+    <img
+      src={emailLogo}
+      alt="Email Logo"
+      style={{ width: '20px', height: '20px', marginLeft: '8px' }} // Adjust size and spacing as needed
+    />
+  </a>
+</button>
+
           </div>
         </div>
       </Profile>
@@ -282,7 +291,7 @@ const Form = styled.div`
     button {
       width: 8rem;
       height: 1.8rem;
-      background-color: #01be96;
+      background-color: #ffc525;
       color: white;
       border: none;
       border-radius: 5px;

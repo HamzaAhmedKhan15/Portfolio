@@ -6,6 +6,7 @@ import facebook from "../../assets/images/facebook.png";
 import github from "../../assets/images/github.png";
 import linkedin from "../../assets/images/linkedin.png";
 import profile from "../../assets/images/mee.png";
+import whatsapp from "../../assets/images/whatsapp.png"
 import '../../assets/css/mycss.css';
 
 
@@ -32,15 +33,23 @@ const ProfComponent = () => {
           />
           <br />
           <div className="button-container">
-            <button className="talk">
-              <a
-                href="http://wa.me/+923008263067"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Let's talk
-              </a>
-            </button>
+          <button className="talk" style={{fontWeight:"bolder"}}>
+  <a
+    href="http://wa.me/+923008263067"
+    target="_blank"
+    rel="noopener noreferrer"
+    style={{ display: 'flex', alignItems: 'center' }} // Optional, for better alignment
+  >
+    Let's talk 
+
+    <img
+      src={whatsapp}
+      alt="WhatsApp Logo"
+      style={{ width: '17px', height: '17px', marginLeft: '8px' }} // Adjust size and spacing as needed
+    />
+  </a>
+</button>
+
           </div>
           <Social>
             <h4>Connect me</h4>
@@ -129,10 +138,9 @@ const Texts = styled.div`
     color: black;
     font-weight: 800;
     filter: drop-shadow(0px 10px 10px #ffd70051);
-
-    :hover {
-      filter: drop-shadow(0px 10px 10px #ffd70070);
-    }
+      :hover {
+        filter: drop-shadow(0px 10px 10px #ffd70070);
+      }
   }
 `;
 
