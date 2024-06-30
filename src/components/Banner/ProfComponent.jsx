@@ -23,7 +23,7 @@ const ProfComponent = () => {
             className="stack"
             strings={[
               "MERN Stack Developer.",
-              "Python Developer.",
+              "Freelancer.",
               "A.I. Enthusiast.",
               "CSIT Undergrad.",
             ]}
