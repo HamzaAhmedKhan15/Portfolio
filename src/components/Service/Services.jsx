@@ -26,30 +26,30 @@ const Services = () => {
           <Card
           Icon={MdOutlineWeb}
             title={"Web App Development"}
-            disc2={`Frontend Development ( ReactJs, NextJs, AngularJS )`}
+            disc2={`Frontend Development ( ReactJs, NextJs )`}
             disc3={`Backend Development ( Node.js, Express.js )`}
-            disc4={`Database Managment ( MongoDb, MySQL )`}
+            disc4={`Database Managment ( MongoDb, MySQL, AWS )`}
           />
         </Zoom>
   
         <Zoom className="info">
           <Card
             Icon={FiCodesandbox}
-            title={"UI/UX Designing"}
-            disc={`Wireframing and Prototyping ( Figma, Visily.ai )`}
-            disc3={`Interactive UI designs`}
-            disc4={`User Research and Personas`}  
+            title={"API Integration"}
+            disc={`RESTful APIs with Redux Toolkit for efficient state management.`}
+            disc3={`Redux Thunk for handling asynchronous API calls and data flow`}
+            disc4={``}  
           />
         </Zoom>
 
         <Zoom className="info">
           <Card
-            Icon={GiMaterialsScience}
-            title={"Data Science"}
-            disc={`Data Cleaning and Preprocessing`}
-            disc2={`Exploratory Data Analysis (EDA)`}
-            disc3={`Data Visualization (Power BI) `}
-            disc4={`Data Warehousing and ETL`}
+            Icon={CgWebsite}
+            title={"Maintenance & Support"}
+            // disc={`Providing Ongoing Updates`}
+            disc2={`Bug Fixing and Debugging`}
+            disc3={`Technical Support`}
+            disc4={`Code Refactoring, Optimization and Documentation`}
           />
         </Zoom>
       </Cards>

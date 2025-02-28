@@ -19,7 +19,7 @@ function App() {
       </Banner>
       <Aboutme />
       <Services />
-      <Certifications />
+      {/* <Certifications /> */}
       <LightColor>
         <Projects />
       </LightColor>

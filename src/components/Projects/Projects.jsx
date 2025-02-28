@@ -7,7 +7,7 @@ const Projects = () => {
   return (
     <Container id='project'>
         <Zoom>
-            <h1>Recent <span className="green">Projects</span></h1>
+            <h1>My <span className="green">Projects</span></h1>
             <p className="centered-text">Here are some of my Open-source projects, aiming to provide the best features and suitable software according to your requirements.</p>
         </Zoom>
         <Slide>
