@@ -20,27 +20,25 @@ const Projects = () => {
 export default Projects;
 
 const Container = styled.div`
-    width: 80%;
-    max-width: 1280px;
+    width: min(90%, 1280px);
     margin: 0 auto;
-    padding: 3rem 0;
+    padding: clamp(2rem, 5vw, 3rem) clamp(0.75rem, 3vw, 1rem);
     text-align: center;
     position: relative;
-    @media(max-width: 840px){
-        width: 90%;
+    @media (max-width: 840px) {
+        width: min(92%, 1280px);
     }
     h1{
-        font-size: 1.9rem;
+        font-size: clamp(1.35rem, 2.5vw, 1.9rem);
     }
 
     p{
-        width: 28rem;
+        max-width: 36rem;
+        width: min(100%, 36rem);
         margin: 0 auto;
         padding: 1rem 0;
-        font-size: 0.9rem;
-        @media(max-width : 500px){
-            width: 90%;
-        }
+        font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+        line-height: 1.55;
     }
     
 `

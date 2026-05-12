@@ -6,6 +6,8 @@ import "../../index.css";
 import Signature from "../../assets/images/signature.png";
 import resumeLogo from "../../assets/images/download.png"
 
+const RESUME_PDF = `${process.env.PUBLIC_URL}/HamzaAhmedKhan_Resume.pdf`;
+
 const Header = () => {
     const [bar, setBar] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
@@ -36,8 +38,9 @@ const Header = () => {
     {isMobileView ? (
      <ResumeButton>
      <a
-       href="/Hamza-Resume.pdf"
-       download="Hamza-Resume"
+       href={RESUME_PDF}
+       target="_blank"
+       rel="noopener noreferrer"
        className="download-link"
      >
        <button style={{ display: 'flex', alignItems: 'center' }}>
@@ -59,6 +62,9 @@ const Header = () => {
           <a href="#home">Home</a>
         </span>
         <span>
+          <a href="#about">About</a>
+        </span>
+        <span>
           <a href="#service">Skills</a>
         </span>
         <span>
@@ -68,7 +74,12 @@ const Header = () => {
           <a href="#footer">Contact</a>
         </span>
         <span>
-            <a href="/Hamza-Resume.pdf" download="Hamza-Resume" className="download-link">
+            <a
+              href={RESUME_PDF}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="download-link"
+            >
               <button className="space">Resume</button>
             </a>
           </span>
@@ -167,13 +178,13 @@ const Nav = styled.div`
       padding:15px 30px ;
       marginLeft: 10px;
       cursor: pointer;
-      background-color: #ffc525;
+      background-color: #2e46a1;
       border: none;
-      color: black;
+      color: #fff;
       font-weight: 800;
-      filter: drop-shadow(0px 10px 10px #ffd70051);
+      filter: drop-shadow(0px 10px 10px #2e46a133);
       :hover {
-        filter: drop-shadow(0px 10px 10px #ffd70070);
+        filter: drop-shadow(0px 10px 10px #2e46a146);
       }
     }
   span{
@@ -215,14 +226,14 @@ const ResumeButton = styled.div`
   button {
     padding: 15px 30px;
     cursor: pointer;
-    background-color: #ffc525;
+    background-color: #2e46a1;
     border: none;
-    color: black;
+    color: #fff;
     font-weight: 800;
-    filter: drop-shadow(0px 10px 10px #ffd70051);
+    filter: drop-shadow(0px 10px 10px #2e46a133);
 
     :hover {
-      filter: drop-shadow(0px 10px 10px #ffd70070);
+      filter: drop-shadow(0px 10px 10px #2e46a146);
     }
   }
 `;

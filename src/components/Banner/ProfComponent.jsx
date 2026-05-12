@@ -2,11 +2,10 @@ import React from "react";
 import Typed from "react-typed";
 import styled from "styled-components";
 import { Slide } from "react-awesome-reveal";
-import facebook from "../../assets/images/facebook.png";
+// import facebook from "../../assets/images/facebook.png";
 import github from "../../assets/images/github.png";
 import linkedin from "../../assets/images/linkedin.png";
-import profile from "../../assets/images/mee.png";
-import whatsapp from "../../assets/images/whatsapp.png"
+import whatsapp from "../../assets/images/whatsapp.png";
 import '../../assets/css/mycss.css';
 
 
@@ -22,10 +21,11 @@ const ProfComponent = () => {
           <Typed
             className="stack"
             strings={[
-              "MERN Stack Developer.",
-              "Freelancer.",
-              "A.I. Enthusiast.",
-              "CSIT Undergrad.",
+              "Frontend Developer.",
+              "A.I. Enthusiast",
+              // "Junior Frontend Developer @ Quanrio.",
+              // "React.js · Next.js · Redux Toolkit.",
+              "BCS (CSIT), NED University — Class of 2024.",
             ]}
             typeSpeed={50}
             backSpeed={20}
@@ -54,6 +54,7 @@ const ProfComponent = () => {
           <Social>
             <h4>Connect me</h4>
             <div className="social-icons">
+              {/* Facebook
               <span>
                 <a
                   href="https://www.facebook.com/profile.php?id=100007366266108"
@@ -62,6 +63,7 @@ const ProfComponent = () => {
                   <img src={facebook} className="iconi" alt="" />
                 </a>
               </span>
+              */}
               <span>
                 <a href="https://github.com/HamzaAhmedKhan15" target="_blank">
                   <img src={github} className="iconi" alt="" />
@@ -77,7 +79,11 @@ const ProfComponent = () => {
         </Slide>
       </Texts>
       <Profile>
-          <img src={profile} alt="profile" className="l-10" />
+          <img
+            src={`${process.env.PUBLIC_URL}/MyNewPicture.jpg`}
+            alt="profile"
+            className="l-10"
+          />
       </Profile>
     </Container>
   );
@@ -87,25 +93,43 @@ export default ProfComponent;
 
 const Container = styled.div`
   display: flex;
-  gap: 2rem;
-  padding-top: 3rem;
-  width: 60%;
+  gap: clamp(1rem, 3vw, 2rem);
+  padding: clamp(2rem, 4vw, 3rem) clamp(0.75rem, 3vw, 1rem) 0;
+  width: min(92%, 1280px);
   max-width: 1280px;
   margin: 0 auto;
   z-index: 1;
 
+  @media (max-width: 1024px) {
+    width: min(90%, 1280px);
+  }
+
   @media (max-width: 840px) {
-    width: 75%;
+    width: min(92%, 1280px);
   }
 
   @media (max-width: 640px) {
     flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
 `;
 
 const Texts = styled.div`
-  flex: 1; /* Take up the remaining space in the container */
-  padding-right: 2rem; /* Add padding to the right to create space between text and profile */
+  flex: 1;
+  padding-right: clamp(0.5rem, 3vw, 2rem);
+
+  @media (max-width: 640px) {
+    padding-right: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  h2 {
+    font-size: clamp(1.1rem, 2.8vw, 1.5rem);
+  }
 
   h4 {
     padding: 1rem 0;
@@ -133,13 +157,13 @@ const Texts = styled.div`
     padding: 0.7rem 2rem;
     margin-top: 3rem;
     cursor: pointer;
-    background-color: #ffc525;
+    background-color: #2e46a1;
     border: none;
-    color: black;
+    color: #fff;
     font-weight: 800;
-    filter: drop-shadow(0px 10px 10px #ffd70051);
+    filter: drop-shadow(0px 10px 10px #2e46a133);
       :hover {
-        filter: drop-shadow(0px 10px 10px #ffd70070);
+        filter: drop-shadow(0px 10px 10px #2e46a146);
       }
   }
 `;
@@ -149,6 +173,11 @@ const Social = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-wrap: wrap;
+
+  @media (max-width: 640px) {
+    justify-content: center;
+  }
 
   p {
     font-size: 0.9rem;
@@ -167,7 +196,7 @@ const Social = styled.div`
       width: 2.3rem;
       height: 2rem;
       clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
-      background-color: #ffc525;
+      background-color: #2e46a1;
       position: relative;
       transition: transform 400ms ease-in-out;
 
@@ -189,26 +218,29 @@ const Social = styled.div`
 const Profile = styled.div`
   display: flex;
   justify-content: flex-end;
-  /* Align the content to the right */
+  flex-shrink: 0;
+
+  @media (max-width: 640px) {
+    justify-content: center;
+    width: 100%;
+  }
 
   img {
-    width: 25rem;
-    height:25rem;
-    filter: drop-shadow(0px 10px 10px #ffd70051);
+    width: clamp(14rem, 32vw, 25rem);
+    height: clamp(14rem, 32vw, 25rem);
+    border-radius: 50%;
+    object-fit: cover;
+    filter: drop-shadow(0px 10px 10px #2e46a133);
     transition: transform 400ms ease-in-out;
 
     @media (max-width: 790px) {
-      width: 20rem;
-      height:20rem;
-    }
-
-    @media (max-width: 660px) {
-      width: 20rem;
-      height:20rem;
+      width: clamp(13rem, 38vw, 20rem);
+      height: clamp(13rem, 38vw, 20rem);
     }
 
     @media (max-width: 640px) {
-      width: 100%;
+      width: min(18rem, 88vw);
+      height: min(18rem, 88vw);
     }
   }
 

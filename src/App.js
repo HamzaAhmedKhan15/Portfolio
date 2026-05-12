@@ -37,10 +37,11 @@ export default App;
 const Container = styled.div``;
 const Banner = styled.div`
 background: url('../../assets/images/deep blue.jpg');
-  height: 100vh;
+  min-height: 100vh;
+  min-height: 100dvh;
   @media (max-width: 640px) {
-    height: 100%;
-    padding-bottom: 2rem;
+    min-height: unset;
+    padding-bottom: clamp(1.5rem, 4vw, 2.5rem);
   }
 `;
 

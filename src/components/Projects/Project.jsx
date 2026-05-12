@@ -3,11 +3,15 @@ import styled from 'styled-components';
 import '../../assets/css/mycss.css';
 
 const Project = (props) => {
-    const { img, title, disc, sourceCode, onSelect, index, onHover} = props.item;
+  const { img, title, disc, sourceCode } = props.item;
+  const { onSelect, index, onHover } = props;
   return (
-    <Container  onClick={() => onSelect(index)}
-    onMouseEnter={() => onHover(index)}
-    onMouseLeave={() => onHover(null)} className='project'>
+    <Container
+      onClick={() => onSelect(index)}
+      onMouseEnter={() => onHover && onHover(index)}
+      onMouseLeave={() => onHover && onHover(null)}
+      className="project"
+    >
         <img src={img} alt="project" />
         <div className="disc">
             <h1 className='proj'>{title}</h1>
@@ -22,11 +26,12 @@ const Project = (props) => {
 export default Project;
 
 const Container = styled.div`
-    height: 10rem;
+    min-height: 10rem;
+    height: clamp(9rem, 22vw, 11rem);
     background-color: #4e5156;
-    margin: 0 0.5rem;
+    margin: 0 clamp(0.25rem, 1vw, 0.5rem);
     padding: 0.5rem;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     position: relative;
     overflow: hidden;
@@ -43,8 +48,8 @@ const Container = styled.div`
         bottom: -10rem;
         text-align: left;
         padding: 0.5rem;
-        background-color: #ffc525;
-        color: black;
+        background-color: #2e46a1;
+        color: #fff;
         transition: all 400ms ease-in-out;
         h1{
             font-size: 1rem;

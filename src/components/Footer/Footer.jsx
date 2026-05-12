@@ -4,7 +4,7 @@ import { MdAlternateEmail } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 import { HiOutlineMailOpen } from "react-icons/hi";
 import { AiFillGithub, AiFillLinkedin, AiOutlineArrowUp } from "react-icons/ai";
-import { BsFacebook } from "react-icons/bs";
+// import { BsFacebook } from "react-icons/bs";
 import { FiMail, FiPhoneCall } from "react-icons/fi";
 import { Slide, Zoom, Fade } from "react-awesome-reveal";
 import { IoLocationOutline } from "react-icons/io5";
@@ -85,6 +85,7 @@ const Footer = () => {
                 </a>
               </span>
             </Zoom>
+            {/* Facebook
             <Zoom>
               <span>
                 <a href="https://www.facebook.com/profile.php?id=100007366266108">
@@ -92,6 +93,7 @@ const Footer = () => {
                 </a>
               </span>
             </Zoom>
+            */}
             <button className="button-container2">
   <a
     href="https://mail.google.com/mail/?view=cm&to=hamzaahmedkhan718@gmail.com"
@@ -135,26 +137,29 @@ export default Footer;
 // Styled component for media query
 const MediaQueryWrapper = styled.div`
   img {
-    margin-left: 10px;
+    margin-left: clamp(0px, 4vw, 60px);
+    max-width: 100%;
+    height: auto;
   }
   @media (max-width: 768px) {
     img {
-      width: 100%; /* For example, make the image take the full width */
+      width: 100%;
+      margin-left: 0;
     }
   }
 `;
 
 const Container = styled.div`
-  margin-top: 2rem;
   position: relative;
   padding: 2rem 0;
-  width: 80%;
+  width: min(90%, 1280px);
   max-width: 1280px;
-  margin: 0 auto;
+  margin: 2rem auto 0;
   display: flex;
   justify-content: space-between;
+  gap: clamp(1rem, 3vw, 2rem);
   @media (max-width: 840px) {
-    width: 90%;
+    width: min(92%, 1280px);
   }
 
   @media (max-width: 650px) {
@@ -221,7 +226,7 @@ const Profile = styled.div`
         border-radius: 50px;
 
         :hover {
-          background-color: #ffc525;
+          background-color: #2e46a1;
         }
 
         a {
@@ -235,7 +240,8 @@ const Profile = styled.div`
 const ArrowUp = styled.div`
   width: 2rem;
   height: 2rem;
-  background-color: #ffc525;
+  background-color: #2e46a1;
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -291,14 +297,14 @@ const Form = styled.div`
     button {
       width: 8rem;
       height: 1.8rem;
-      background-color: #ffc525;
+      background-color: #2e46a1;
       color: white;
       border: none;
       border-radius: 5px;
-      filter: drop-shadow(0px 4px 5px #01be9551);
+      filter: drop-shadow(0px 4px 5px #2e46a133);
       cursor: pointer;
       :hover {
-        filter: drop-shadow(0px 6px 9px #01be9551);
+        filter: drop-shadow(0px 6px 9px #2e46a146);
       }
     }
   }

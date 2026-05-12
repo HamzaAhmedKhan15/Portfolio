@@ -1,31 +1,48 @@
 import React from "react";
-import { MdOutlineWeb } from "react-icons/md";
-import { FiCodesandbox } from "react-icons/fi";
-import { GiMaterialsScience } from "react-icons/gi";
-import { CgWebsite } from "react-icons/cg";
 import styled from "styled-components";
 import { Slide } from "react-awesome-reveal";
-import { Zoom } from 'react-awesome-reveal';
-import "../../assets/css/mycss.css"
-
+import { Zoom } from "react-awesome-reveal";
+import "../../assets/css/mycss.css";
 
 const Aboutme = () => {
   return (
-    <Container id="service">
+    <Container id="about">
       <Slide direction="down">
-      <Zoom>
-      <CenteredContainer>
-      <h1>About <span className="green">Me</span></h1><br />
-      <p className="centered-text" style={{lineHeight: '2', paddingRight:"30px", paddingLeft:"30px", marginTop:"10px"}}>I'm An aspiring MERN Stack Developer with a passion for building reliable and scalable web applications. I've always been captivated by the digital realm and its profound influence on our daily lives. My
-strong collaboration and multitasking skills make me a valuable team member. As a MERN developer, I am
-skilled in troubleshooting and debugging, ensuring smooth development processes. I bring a solid
-understanding of MongoDB, Express, Node.js, ReactJS and NextJS to contribute effectively to any
-development team, aiming to drive innovation and success.
-</p>
-    </CenteredContainer>
+        <Zoom>
+          <CenteredContainer>
+            <h1>
+              About <span className="green">Me</span>
+            </h1>
+            <Bio>
+              <p>
+                I am Hamza Ahmed Khan, a Frontend Developer based in Karachi, Pakistan,
+                focused on building scalable, responsive, and user-centered web
+                applications with React.js and Next.js. I enjoy translating complex
+                requirements into clear interfaces—whether that is multi-step admin
+                workflows, nested routing, or data-heavy dashboards—while keeping
+                performance and maintainability in mind.
+              </p>
+              <p>
+                I hold a Bachelor of Computer Science and Information Technology from
+                NED University of Engineering and Technology (2020–2024, graduated July
+                2024). Professionally, I am a Junior Frontend Developer at Quanrio LLP,
+                where I contribute to live production systems: customized rich-text
+                publishing, advanced state with Redux Toolkit, IndexedDB-based offline
+                access, and payment gateway integration, working closely with clients to
+                refine scope and ship features on schedule. Previously, I completed a
+                Frontend Developer internship at Transviti Pvt. Ltd., enhancing TalentVare
+                with React and Material UI, integrating APIs with Fetch, and stabilizing
+                application state with Redux.
+              </p>
+              <p>
+                Across projects—from scholarship portals to large SaaS-style modules—I
+                emphasize collaboration with backend engineers, disciplined debugging,
+                and polished UI delivery on desktop, tablet, and mobile.
+              </p>
+            </Bio>
+          </CenteredContainer>
         </Zoom>
       </Slide>
-     
     </Container>
   );
 };
@@ -33,16 +50,15 @@ development team, aiming to drive innovation and success.
 export default Aboutme;
 
 const Container = styled.div`
-  width: 90%;
-  max-width: 1280px;
+  width: min(90%, 1280px);
   margin: 0 auto;
-  padding: 3rem 0;
+  padding: clamp(2rem, 5vw, 3rem) clamp(0.75rem, 3vw, 1rem);
   @media (max-width: 840px) {
-    width: 90%;
+    width: min(92%, 1280px);
   }
-
   h1 {
-    padding-top: 1rem;
+    padding-top: 0.5rem;
+    font-size: clamp(1.35rem, 2.5vw, 1.9rem);
   }
 `;
 
@@ -53,9 +69,21 @@ const CenteredContainer = styled.div`
   justify-content: center;
 `;
 
-const Cards = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  margin-top: 4rem;
-  gap: 1rem;
+const Bio = styled.div`
+  max-width: 52rem;
+  margin-top: clamp(0.75rem, 2vw, 1.25rem);
+  text-align: center;
+  line-height: 1.75;
+  font-size: clamp(0.9rem, 1.6vw, 1rem);
+
+  p {
+    margin-bottom: 1rem;
+    color: rgba(255, 255, 255, 0.92);
+    padding-left: clamp(0.25rem, 2vw, 1.5rem);
+    padding-right: clamp(0.25rem, 2vw, 1.5rem);
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
 `;
