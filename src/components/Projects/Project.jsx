@@ -1,17 +1,21 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
+import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import "../../assets/css/mycss.css";
 
 const Project = (props) => {
   const { img, title, disc, sourceCode } = props.item;
   const { onSelect, index, onHover } = props;
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const containerRef = useRef(null);
 
   return (
     <Container
+      ref={containerRef}
       onClick={() => onSelect(index)}
       onMouseEnter={() => onHover && onHover(index)}
       onMouseLeave={() => onHover && onHover(null)}
-      className="project"
+      className={`project${detailsOpen ? " details-open" : ""}`}
     >
       <Media>
         <img src={img} alt={title} />
@@ -30,7 +34,33 @@ const Project = (props) => {
           </SourceRow>
           <Description>{disc}</Description>
         </PanelBody>
-        <PanelTitle className="project-panel-title">{title}</PanelTitle>
+        <PanelTitle
+          type="button"
+          className="project-panel-title"
+          aria-expanded={detailsOpen}
+          onClick={(e) => {
+            e.stopPropagation();
+            setDetailsOpen((open) => {
+              if (open) {
+                const root = containerRef.current;
+                const active = document.activeElement;
+                if (
+                  root &&
+                  active instanceof HTMLElement &&
+                  root.contains(active)
+                ) {
+                  active.blur();
+                }
+              }
+              return !open;
+            });
+          }}
+        >
+          <TitleLabel>{title}</TitleLabel>
+          <DrawerHint aria-hidden>
+            {detailsOpen ? <IoIosArrowDown /> : <IoIosArrowUp />}
+          </DrawerHint>
+        </PanelTitle>
       </Panel>
     </Container>
   );
@@ -70,39 +100,46 @@ const Container = styled.div`
     transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  &:hover img,
   &:focus-within img {
     transform: scale(1.06);
   }
 
-  /* Expanded panel */
-  &:hover .project-panel,
-  &:focus-within .project-panel {
+  @media (hover: hover) {
+    &:hover img {
+      transform: scale(1.06);
+    }
+  }
+
+  /* Expand panel: real hover only (avoids touch sticky-hover), keyboard focus, or title tap */
+  &:focus-within .project-panel,
+  &.details-open .project-panel {
     max-height: 88%;
     box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.35);
   }
 
-  &:hover .project-panel-body,
-  &:focus-within .project-panel-body {
+  &:focus-within .project-panel-body,
+  &.details-open .project-panel-body {
     max-height: min(11.5rem, 42vh);
     opacity: 1;
     padding-top: 0.65rem;
-    margin-bottom: 0.35rem;
+    padding-bottom: 0.45rem;
+    margin-bottom: 0;
     overflow-x: hidden;
     overflow-y: auto;
   }
 
-  /* Touch / no-hover: always show details (scrollable) */
-  @media (hover: none) {
-    .project-panel {
+  @media (hover: hover) {
+    &:hover .project-panel {
       max-height: 88%;
+      box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.35);
     }
 
-    .project-panel-body {
-      max-height: min(10rem, 38vh);
+    &:hover .project-panel-body {
+      max-height: min(11.5rem, 42vh);
       opacity: 1;
-      padding-top: 0.55rem;
-      margin-bottom: 0.35rem;
+      padding-top: 0.65rem;
+      padding-bottom: 0.45rem;
+      margin-bottom: 0;
       overflow-x: hidden;
       overflow-y: auto;
     }
@@ -130,9 +167,14 @@ const Media = styled.div`
     pointer-events: none;
   }
 
-  ${Container}:hover &::after,
   ${Container}:focus-within &::after {
     opacity: 0.55;
+  }
+
+  @media (hover: hover) {
+    ${Container}:hover &::after {
+      opacity: 0.55;
+    }
   }
 `;
 
@@ -155,22 +197,62 @@ const Panel = styled.div`
   );
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 1px solid rgba(0, 0, 0, 0.22);
   border-radius: 14px 14px 0 0;
 `;
 
-const PanelTitle = styled.div`
+const PanelTitle = styled.button`
   flex-shrink: 0;
   margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
   padding: 0.55rem 0.85rem 0.65rem;
   font-size: clamp(0.88rem, 1.9vw, 1rem);
+  font-family: inherit;
   font-weight: 600;
   letter-spacing: 0.02em;
   line-height: 1.25;
   color: #fff;
   text-align: left;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  width: 100%;
+  border: none;
+  border-radius: 0;
   background: rgba(36, 54, 130, 0.92);
+  box-shadow: inset 0 1px 0 0 rgba(0, 0, 0, 0.28);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+
+  &:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.85);
+    outline-offset: -2px;
+  }
+`;
+
+const TitleLabel = styled.span`
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+`;
+
+const DrawerHint = styled.span`
+  flex-shrink: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.88;
+  font-size: 1.15rem;
+  line-height: 0;
+  color: rgba(255, 255, 255, 0.95);
+
+  svg {
+    display: block;
+  }
+
+  @media (hover: none), (max-width: 640px) {
+    display: inline-flex;
+  }
 `;
 
 const PanelBody = styled.div`
@@ -185,12 +267,23 @@ const PanelBody = styled.div`
 
   overflow: hidden;
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  overscroll-behavior-y: contain;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.28) rgba(30, 42, 110, 0.97);
 
   &::-webkit-scrollbar {
     width: 5px;
   }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(30, 42, 110, 0.97);
+    border-radius: 99px;
+  }
+
   &::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.28);
     border-radius: 99px;
   }
 `;
