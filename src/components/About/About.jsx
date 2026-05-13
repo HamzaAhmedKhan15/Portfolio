@@ -25,7 +25,7 @@ const Aboutme = () => {
               <p>
                 I hold a Bachelor of Computer Science and Information Technology from
                 NED University of Engineering and Technology (2020–2024, graduated July
-                2024). Professionally, I am a Junior Frontend Developer at Quanrio LLP,
+                2024). Professionally, I am a Frontend Developer at Quanrio LLP,
                 where I contribute to live production systems: customized rich-text
                 publishing, advanced state with Redux Toolkit, IndexedDB-based offline
                 access, and payment gateway integration, working closely with clients to
@@ -50,11 +50,12 @@ const Aboutme = () => {
 export default Aboutme;
 
 const Container = styled.div`
-  width: min(90%, 1280px);
+  width: min(94%, 1280px);
   margin: 0 auto;
-  padding: clamp(2rem, 5vw, 3rem) clamp(0.75rem, 3vw, 1rem);
+  padding: clamp(2rem, 5vw, 3rem) clamp(0.75rem, 3vw, 1.25rem);
+  box-sizing: border-box;
   @media (max-width: 840px) {
-    width: min(92%, 1280px);
+    width: min(96%, 1280px);
   }
   h1 {
     padding-top: 0.5rem;

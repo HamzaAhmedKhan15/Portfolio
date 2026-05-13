@@ -50,7 +50,7 @@ const CardHeader = styled.div`
   }
 
   h1 {
-    font-size: clamp(0.85rem, 1.2vw, 0.95rem);
+    font-size: clamp(0.96rem, 3.1vw, 1.18rem);
     font-weight: 600;
     padding-top: 0.4rem;
     padding-bottom: 0.15rem;

@@ -34,7 +34,10 @@ function App() {
 
 export default App;
 
-const Container = styled.div``;
+const Container = styled.div`
+  overflow-x: hidden;
+  min-width: 0;
+`;
 const Banner = styled.div`
 background: url('../../assets/images/deep blue.jpg');
   min-height: 100vh;

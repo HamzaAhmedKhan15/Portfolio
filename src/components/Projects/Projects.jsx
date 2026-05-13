@@ -20,13 +20,14 @@ const Projects = () => {
 export default Projects;
 
 const Container = styled.div`
-    width: min(90%, 1280px);
+    width: min(96%, 1480px);
     margin: 0 auto;
-    padding: clamp(2rem, 5vw, 3rem) clamp(0.75rem, 3vw, 1rem);
+    padding: clamp(2rem, 5vw, 3rem) clamp(0.75rem, 3vw, 1.25rem);
     text-align: center;
     position: relative;
+    box-sizing: border-box;
     @media (max-width: 840px) {
-        width: min(92%, 1280px);
+        width: min(96%, 1480px);
     }
     h1{
         font-size: clamp(1.35rem, 2.5vw, 1.9rem);

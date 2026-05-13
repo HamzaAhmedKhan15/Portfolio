@@ -1,10 +1,17 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import Slider from "react-slick";
 import Project from "./Project";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import styled from "styled-components";
 
 let data = [
+  {
+    img: `${process.env.PUBLIC_URL}/bwcPic.png`,
+    title: "BWC Admin Portal",
+    disc:
+      "Admin portal and CMS for the Begin With Children (BWC) parenting website — built with React.js, Redux Toolkit, Ant Design, and Tailwind CSS. Features nested routing for multi-level content categories, dynamic route-based category management, and a responsive, user-friendly interface.",
+    sourceCode: "https://github.com/HamzaAhmedKhan15/BWC-Admin-Portal",
+  },
   {
     img: require("../../assets/images/p1.PNG"),
     title: "Scholarship Portal",
@@ -67,9 +74,9 @@ let data = [
 ];
 
 const settings = {
-  className: "center",
+  className: "center project-slider",
   centerMode: true,
-  centerPadding: "48px",
+  centerPadding: "20px",
   dots: false,
   infinite: true,
   speed: 650,
@@ -92,7 +99,7 @@ const settings = {
         slidesToShow: 2,
         slidesToScroll: 1,
         centerMode: true,
-        centerPadding: "36px",
+        centerPadding: "14px",
         infinite: true,
         dots: false,
         swipeToSlide: true,
@@ -130,8 +137,56 @@ const settings = {
   ],
 };
 
+function wheelDelta(e) {
+  let mult = 1;
+  if (e.deltaMode === 1) mult = 16;
+  if (e.deltaMode === 2) mult = 120;
+  return {
+    x: e.deltaX * mult,
+    y: e.deltaY * mult,
+  };
+}
+
 const SliderComp = () => {
   const sliderRef = useRef(null);
+  const sliderAreaRef = useRef(null);
+  const wheelAcc = useRef(0);
+
+  useEffect(() => {
+    const root = sliderAreaRef.current;
+    if (!root) return undefined;
+
+    const threshold = 72;
+
+    const onWheel = (e) => {
+      const { x: dx, y: dy } = wheelDelta(e);
+      const horizontalDominant =
+        Math.abs(dx) > 1.5 && Math.abs(dx) >= Math.abs(dy) * 0.75;
+      const shiftAsHorizontal = e.shiftKey && Math.abs(dy) > Math.abs(dx);
+
+      if (!horizontalDominant && !shiftAsHorizontal) return;
+
+      const delta = shiftAsHorizontal ? dy : dx;
+      if (Math.abs(delta) < 0.25) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      wheelAcc.current += delta;
+      while (wheelAcc.current >= threshold) {
+        wheelAcc.current -= threshold;
+        sliderRef.current?.slickNext();
+      }
+      while (wheelAcc.current <= -threshold) {
+        wheelAcc.current += threshold;
+        sliderRef.current?.slickPrev();
+      }
+    };
+
+    root.addEventListener("wheel", onWheel, { passive: false, capture: true });
+    return () =>
+      root.removeEventListener("wheel", onWheel, { capture: true });
+  }, []);
 
   const handleProjectClick = (index) => {
     if (sliderRef.current) {
@@ -153,7 +208,7 @@ const SliderComp = () => {
 
   return (
     <Outer>
-      <Container>
+      <Container ref={sliderAreaRef}>
         <Slider ref={sliderRef} {...settings}>
           {sliderProject}
         </Slider>
@@ -184,52 +239,81 @@ export default SliderComp;
 
 const Outer = styled.div`
   width: 100%;
-  padding: 0 clamp(0.25rem, 2vw, 1.25rem);
+  padding: 0 clamp(0.35rem, 2vw, 1.25rem);
+  margin-top: 0.25rem;
 `;
 
 const Container = styled.div`
   position: relative;
-  max-width: 1200px;
+  max-width: 1480px;
   margin: 0 auto;
+  padding: 0 clamp(1rem, 3vw, 1.85rem);
+
+  .project-slider .slick-list {
+    padding: 1.75rem 0 2.25rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0 1.25rem;
+  }
 `;
 
 const Buttons = styled.div`
   button {
-    width: 2.25rem;
-    height: 2.25rem;
-    background-color: rgba(255, 255, 255, 0.12);
+    width: 2.65rem;
+    height: 2.65rem;
+    background: rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     cursor: pointer;
-    color: #2e46a1;
-    border: none;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.18);
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    z-index: 2;
-    border-radius: 4px;
+    z-index: 6;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    font-size: 1.35rem;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+    transition: background 0.22s ease, border-color 0.22s ease, color 0.22s ease,
+      transform 0.22s ease;
 
     &:hover {
-      background-color: rgba(255, 255, 255, 0.22);
+      background: rgba(46, 70, 161, 0.55);
+      border-color: rgba(255, 255, 255, 0.28);
+      color: #fff;
+      transform: translateY(-50%) scale(1.05);
+    }
+
+    &:active {
+      transform: translateY(-50%) scale(0.97);
     }
   }
 
   .next {
-    right: clamp(-0.25rem, -1vw, -1rem);
+    right: clamp(0.1rem, 1vw, 0.5rem);
   }
 
   .back {
-    left: clamp(-0.25rem, -1vw, -1rem);
+    left: clamp(0.1rem, 1vw, 0.5rem);
   }
 
   @media (max-width: 640px) {
-    .next {
-      right: 0.15rem;
+    button {
+      width: 2.35rem;
+      height: 2.35rem;
+      font-size: 1.2rem;
     }
+
+    .next {
+      right: 0;
+    }
+
     .back {
-      left: 0.15rem;
+      left: 0;
     }
   }
 `;

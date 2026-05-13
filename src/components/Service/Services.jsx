@@ -14,9 +14,9 @@ const Services = () => {
       <Slide direction="down">
         <Zoom>
           <CenteredContainer>
-            <h1>
+            <SectionTitle>
               My <span className="green">Skills</span>
-            </h1>
+            </SectionTitle>
             <Intro>
               A concise snapshot of the technologies and practices I use to ship
               reliable interfaces on live products—from marketing sites to complex admin
@@ -29,7 +29,7 @@ const Services = () => {
         <Zoom className="info">
           <Card
             Icon={MdOutlineWeb}
-            title={"Frontend development"}
+            title={"Frontend Development"}
             disc={`Markup & styling: HTML5, CSS3, JavaScript (ES6+), Bootstrap, Tailwind CSS.`}
             disc2={`Libraries & frameworks: React.js, Next.js, Context API, Redux Toolkit, Redux Thunk.`}
             disc3={`UI systems: Material UI, Ant Design, responsive layouts, accessible components.`}
@@ -40,7 +40,7 @@ const Services = () => {
         <Zoom className="info">
           <Card
             Icon={FiCodesandbox}
-            title={"APIs, data & tooling"}
+            title={"APIs, Data & Tooling"}
             disc={`RESTful APIs, Fetch API, JSON payloads, and close collaboration with backend teams.`}
             disc2={`Persistence: MongoDB, MySQL, IndexedDB for offline-first and client-side storage.`}
             disc3={`Platforms & utilities: Node.js, Express.js, AWS (as used on projects), Git version control.`}
@@ -51,7 +51,7 @@ const Services = () => {
         <Zoom className="info">
           <Card
             Icon={CgWebsite}
-            title={"Product-focused engineering"}
+            title={"Product-focused Engineering"}
             disc={`Finite state machine (FSM) architecture: explicit states and transitions for predictable UI flows, clearer async handling, and easier reasoning about complex screens.`}
             disc2={`Offline-first experiences: IndexedDB patterns, reload and re-sync considerations.`}
             disc3={`Integrations: Twilio for programmable voice and calling workflows; payment gateways; PDF generation; and transactional email where required.`}
@@ -66,17 +66,19 @@ const Services = () => {
 export default Services;
 
 const Container = styled.div`
-  width: min(90%, 1280px);
+  width: min(94%, 1280px);
   margin: 0 auto;
-  padding: clamp(2rem, 5vw, 3rem) clamp(0.75rem, 3vw, 1rem);
+  padding: clamp(2rem, 5vw, 3rem) clamp(0.75rem, 3vw, 1.25rem);
+  box-sizing: border-box;
   @media (max-width: 840px) {
-    width: min(92%, 1280px);
+    width: min(96%, 1280px);
   }
+`;
 
-  h1 {
-    padding-top: 0.5rem;
-    font-size: clamp(1.35rem, 2.5vw, 1.9rem);
-  }
+const SectionTitle = styled.h1`
+  padding-top: 0.5rem;
+  font-size: clamp(1.35rem, 2.5vw, 1.9rem);
+  margin: 0;
 `;
 
 const CenteredContainer = styled.div`

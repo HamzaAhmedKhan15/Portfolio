@@ -18,6 +18,8 @@
 
 .stack {
   font-size: clamp(1.1rem, 3.5vw, 1.875rem);
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .profile{
@@ -44,18 +46,31 @@
 }
 
 .button-container2 {
-  margin-right: 50px; 
+  margin-right: clamp(0, 3vw, 50px); 
   display: flex;
   background-color: #2e46a1;
-  padding: 10px 20px;
-  margin-left: 10px;
-  border: 1px;
-  border-radius: 5px;
+  padding: 10px clamp(12px, 3vw, 20px);
+  margin-left: clamp(0, 2vw, 10px);
+  border: 1px solid transparent;
+  border-radius: 12px;
   filter: drop-shadow(0px 10px 10px #2e46a133);
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 100%;
+  box-sizing: border-box;
   :hover {
     filter: drop-shadow(0px 10px 10px #2e46a146);
   }
 
+}
+
+@media (max-width: 650px) {
+  .button-container2 {
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+    max-width: 20rem;
+  }
 }
 
 .button-container button a {
@@ -73,8 +88,13 @@
 
 .space{
   margin-left: 20px;
-  border: 1px;
-  border-radius: 3px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+}
+
+.talk{
+  border: 1px solid transparent;
+  border-radius: 12px;
 }
 
 .centered-text {
@@ -87,9 +107,4 @@
 
 .proj{
   padding-left: 16px;
-}
-
-.talk{
-  border: 1px;
-  border-radius: 3px;
 }

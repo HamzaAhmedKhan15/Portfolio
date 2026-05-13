@@ -23,7 +23,7 @@ const ProfComponent = () => {
             strings={[
               "Frontend Developer.",
               "A.I. Enthusiast",
-              // "Junior Frontend Developer @ Quanrio.",
+              // "Frontend Developer @ Quanrio.",
               // "React.js · Next.js · Redux Toolkit.",
               "BCS (CSIT), NED University — Class of 2024.",
             ]}
@@ -95,10 +95,12 @@ const Container = styled.div`
   display: flex;
   gap: clamp(1rem, 3vw, 2rem);
   padding: clamp(2rem, 4vw, 3rem) clamp(0.75rem, 3vw, 1rem) 0;
-  width: min(92%, 1280px);
+  width: min(94%, 1280px);
   max-width: 1280px;
   margin: 0 auto;
   z-index: 1;
+  box-sizing: border-box;
+  min-width: 0;
 
   @media (max-width: 1024px) {
     width: min(90%, 1280px);
@@ -129,6 +131,8 @@ const Texts = styled.div`
 
   h2 {
     font-size: clamp(1.1rem, 2.8vw, 1.5rem);
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 
   h4 {
@@ -159,6 +163,7 @@ const Texts = styled.div`
     cursor: pointer;
     background-color: #2e46a1;
     border: none;
+    border-radius: 12px;
     color: #fff;
     font-weight: 800;
     filter: drop-shadow(0px 10px 10px #2e46a133);
