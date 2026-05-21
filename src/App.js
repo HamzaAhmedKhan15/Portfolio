@@ -42,7 +42,9 @@ const Banner = styled.div`
 background: url('../../assets/images/deep blue.jpg');
   min-height: 100vh;
   min-height: 100dvh;
-  @media (max-width: 640px) {
+  /* Tablets/iPads: hero content doesn't fill 100vh, so let the banner size to
+     its content instead of leaving a tall empty band before the About section. */
+  @media (max-width: 1024px) {
     min-height: unset;
     padding-bottom: clamp(1.5rem, 4vw, 2.5rem);
   }

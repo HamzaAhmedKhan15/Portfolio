@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
 import styled from "styled-components";
 import "../../assets/css/mycss.css";
 import "../../index.css";
@@ -7,6 +7,8 @@ import { FiFileText } from "react-icons/fi";
 
 const RESUME_PDF = `${process.env.PUBLIC_URL}/HamzaAhmedKhan_Resume.pdf`;
 const MOBILE_NAV_MAX = 900;
+/** Scroll distance (px) past which the fixed header shrinks + darkens */
+const HEADER_SHRINK_THRESHOLD = 16;
 
 const NAV_LINKS = [
   { href: "#home", label: "Home" },
@@ -21,6 +23,15 @@ const Header = () => {
   const [isNarrow, setIsNarrow] = useState(
     typeof window !== "undefined" ? window.innerWidth <= MOBILE_NAV_MAX : false
   );
+  const [scrolled, setScrolled] = useState(
+    typeof window !== "undefined"
+      ? (window.scrollY ?? 0) > HEADER_SHRINK_THRESHOLD
+      : false
+  );
+  const [spacerH, setSpacerH] = useState(0);
+  const shellRef = useRef(null);
+  const menuButtonRef = useRef(null);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -33,20 +44,73 @@ const Header = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  /* Close the dropdown when clicking outside it (and not on the toggle button)
+     or pressing Escape — keeps the menu lightweight without a full overlay. */
   useEffect(() => {
     if (!isNarrow || !bar) return undefined;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const onPointerDown = (e) => {
+      if (
+        dropdownRef.current?.contains(e.target) ||
+        menuButtonRef.current?.contains(e.target)
+      ) {
+        return;
+      }
+      setBar(false);
+    };
+    const onKey = (e) => {
+      if (e.key === "Escape") setBar(false);
+    };
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("touchstart", onPointerDown, { passive: true });
+    document.addEventListener("keydown", onKey);
     return () => {
-      document.body.style.overflow = prev;
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("touchstart", onPointerDown);
+      document.removeEventListener("keydown", onKey);
     };
   }, [isNarrow, bar]);
 
+  /* Toggle the shrunk/darkened state once the user scrolls past the threshold. */
+  useEffect(() => {
+    const onScroll = () => {
+      const next = (window.scrollY ?? 0) > HEADER_SHRINK_THRESHOLD;
+      setScrolled((prev) => (prev === next ? prev : next));
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  /* Spacer preserves the page's original top offset so the rest of the layout
+     doesn't jump when the header leaves the flow. We capture the height while
+     the header is at full (unscrolled) size so it stays constant after shrinking. */
+  useLayoutEffect(() => {
+    if (!shellRef.current) return undefined;
+    const measure = () => {
+      if (!shellRef.current) return;
+      if ((window.scrollY ?? 0) <= HEADER_SHRINK_THRESHOLD) {
+        setSpacerH(shellRef.current.offsetHeight);
+      }
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [isNarrow]);
+
   const closeMenu = () => setBar(false);
+  /* Keep the bar dark while the mobile menu is open so the header reads
+     correctly against the dark overlay underneath. */
+  const opaque = scrolled || (isNarrow && bar);
+
+  /* Only the currently-rendered Resume link carries the blast-anchor id —
+     having two elements with the same id is invalid and can make
+     getElementById resolve to the stale one across responsive transitions. */
+  const blastAnchorIdProps = (active) =>
+    active ? { id: "resume-blast-anchor" } : {};
 
   const resumeControl = (
     <a
-      id="resume-blast-anchor"
+      {...blastAnchorIdProps(isNarrow)}
       href={RESUME_PDF}
       target="_blank"
       rel="noopener noreferrer"
@@ -71,7 +135,7 @@ const Header = () => {
       ))}
       <span>
         <a
-          id="resume-blast-anchor"
+          {...blastAnchorIdProps(!isNarrow)}
           href={RESUME_PDF}
           target="_blank"
           rel="noopener noreferrer"
@@ -88,49 +152,89 @@ const Header = () => {
   );
 
   return (
-    <Container bar={bar}>
-      <LogoBlock>
-        <a href="/" onClick={closeMenu}>
-          <SignatureImg src={Signature} alt="Home" />
-        </a>
-      </LogoBlock>
+    <>
+      <Shell ref={shellRef} $opaque={opaque}>
+        <Container bar={bar} $scrolled={scrolled}>
+          <LogoBlock>
+            <a href="/" onClick={closeMenu}>
+              <SignatureImg
+                $scrolled={scrolled}
+                src={Signature}
+                alt="Home"
+              />
+            </a>
+          </LogoBlock>
 
-      {isNarrow ? (
-        <>
-          <MobileTop>
-            {resumeControl}
-            <MenuButton
-              type="button"
-              className="bars"
-              aria-label={bar ? "Close menu" : "Open menu"}
-              aria-expanded={bar}
-              onClick={() => setBar((v) => !v)}
-            >
-              <div className="bar" />
-            </MenuButton>
-          </MobileTop>
-          <MobileNavOverlay
-            $open={bar}
-            aria-hidden={!bar}
-            onClick={closeMenu}
-          >
-            <MobileNavInner onClick={(e) => e.stopPropagation()}>
-              {NAV_LINKS.map(({ href, label }) => (
-                <MobileNavLink key={href} href={href} onClick={closeMenu}>
-                  {label}
-                </MobileNavLink>
-              ))}
-            </MobileNavInner>
-          </MobileNavOverlay>
-        </>
-      ) : (
-        <NavDesktop>{navLinks}</NavDesktop>
-      )}
-    </Container>
+          {isNarrow ? (
+            <MobileTop>
+              {resumeControl}
+              <MenuAnchor>
+                <MenuButton
+                  ref={menuButtonRef}
+                  type="button"
+                  className="bars"
+                  aria-label={bar ? "Close menu" : "Open menu"}
+                  aria-expanded={bar}
+                  aria-haspopup="menu"
+                  onClick={() => setBar((v) => !v)}
+                >
+                  <div className="bar" />
+                </MenuButton>
+                <MobileDropdown
+                  ref={dropdownRef}
+                  $open={bar}
+                  role="menu"
+                  aria-hidden={!bar}
+                >
+                  {NAV_LINKS.map(({ href, label }) => (
+                    <MobileNavLink
+                      key={href}
+                      href={href}
+                      role="menuitem"
+                      onClick={closeMenu}
+                    >
+                      {label}
+                    </MobileNavLink>
+                  ))}
+                </MobileDropdown>
+              </MenuAnchor>
+            </MobileTop>
+          ) : (
+            <NavDesktop>{navLinks}</NavDesktop>
+          )}
+        </Container>
+      </Shell>
+      <HeaderSpacer style={{ height: spacerH * 1.4 }} aria-hidden="true" />
+    </>
   );
 };
 
 export default Header;
+
+const Shell = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 250;
+  /* Matches the Services card gradient so the scrolled bar reads as part
+     of the same visual system. Transparent at rest so the hero is untouched. */
+  background: ${(p) =>
+    p.$opaque
+      ? "linear-gradient(159deg, rgb(45, 45, 58) 0%, rgb(0, 0, 0) 100%)"
+      : "transparent"};
+  box-shadow: ${(p) =>
+    p.$opaque ? "0 8px 24px rgba(0, 0, 0, 0.45)" : "none"};
+  border-bottom: 1px solid
+    ${(p) => (p.$opaque ? "rgba(255, 255, 255, 0.06)" : "transparent")};
+  transition: background 0.28s ease, box-shadow 0.28s ease,
+    border-color 0.28s ease;
+`;
+
+const HeaderSpacer = styled.div`
+  width: 100%;
+  flex-shrink: 0;
+`;
 
 const Container = styled.header`
   display: flex;
@@ -141,10 +245,15 @@ const Container = styled.header`
   max-width: 1280px;
   width: min(92%, 1280px);
   margin: 0 auto;
-  padding: clamp(0.75rem, 2vw, 1.5rem) clamp(0.5rem, 2vw, 0.75rem);
+  padding: ${(p) =>
+      p.$scrolled
+        ? "clamp(0.3rem, 0.9vw, 0.55rem)"
+        : "clamp(0.75rem, 2vw, 1.5rem)"}
+    clamp(0.5rem, 2vw, 0.75rem);
   position: relative;
   z-index: 200;
   animation: header 500ms ease-in-out;
+  transition: padding 0.28s ease;
 
   @media (max-width: ${MOBILE_NAV_MAX}px) {
     width: min(100%, 1280px);
@@ -215,17 +324,19 @@ const LogoBlock = styled.div`
 `;
 
 const SignatureImg = styled.img`
-  width: min(50%, 200px);
-  max-width: 220px;
+  width: ${(p) => (p.$scrolled ? "min(40%, 160px)" : "min(50%, 200px)")};
+  max-width: ${(p) => (p.$scrolled ? "180px" : "220px")};
   height: auto;
-  margin-top: clamp(0.25rem, 1.5vw, 1.25rem);
+  margin-top: ${(p) =>
+    p.$scrolled ? "0.1rem" : "clamp(0.25rem, 1.5vw, 1.25rem)"};
   cursor: pointer;
   display: block;
+  transition: width 0.28s ease, max-width 0.28s ease, margin-top 0.28s ease;
 
   @media (max-width: ${MOBILE_NAV_MAX}px) {
-    width: min(42vw, 180px);
-    max-width: 200px;
-    margin-top: 0.15rem;
+    width: ${(p) => (p.$scrolled ? "min(24vw, 110px)" : "min(30vw, 130px)")};
+    max-width: ${(p) => (p.$scrolled ? "120px" : "140px")};
+    margin-top: 0.1rem;
   }
 `;
 
@@ -262,51 +373,66 @@ const ResumeControlButton = styled.span`
   filter: drop-shadow(0px 8px 10px #2e46a133);
 `;
 
-const MobileNavOverlay = styled.div`
-  display: none;
-
-  @media (max-width: ${MOBILE_NAV_MAX}px) {
-    display: ${(p) => (p.$open ? "flex" : "none")};
-    position: fixed;
-    inset: 0;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(15, 15, 22, 0.92);
-    backdrop-filter: blur(6px);
-    z-index: 210;
-    align-items: flex-start;
-    justify-content: center;
-    padding: clamp(5.5rem, 18vw, 7rem) clamp(1rem, 4vw, 1.5rem) 2rem;
-  }
+const MenuAnchor = styled.div`
+  position: relative;
+  display: inline-flex;
+  align-items: center;
 `;
 
-const MobileNavInner = styled.nav`
+const MobileDropdown = styled.nav`
+  position: absolute;
+  top: calc(100% + 0.6rem);
+  right: 0;
+  z-index: 240;
+  min-width: 12rem;
+  max-width: min(80vw, 18rem);
+  padding: 0.4rem;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  gap: 0.35rem;
-  width: min(100%, 22rem);
-  max-height: min(70vh, 520px);
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  gap: 0.15rem;
+  background: linear-gradient(159deg, rgb(45, 45, 58) 0%, rgb(0, 0, 0) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.55);
+  visibility: ${(p) => (p.$open ? "visible" : "hidden")};
+  opacity: ${(p) => (p.$open ? 1 : 0)};
+  transform: ${(p) =>
+    p.$open ? "translateY(0) scale(1)" : "translateY(-6px) scale(0.98)"};
+  transform-origin: top right;
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
+
+  /* Small caret above the box, pointing at the menu button */
+  &::before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    right: 14px;
+    width: 12px;
+    height: 12px;
+    background: linear-gradient(159deg, rgb(45, 45, 58) 0%, rgb(0, 0, 0) 100%);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    transform: rotate(45deg);
+  }
 `;
 
 const MobileNavLink = styled.a`
   display: block;
-  padding: 0.85rem 1rem;
-  font-size: clamp(1.1rem, 3.5vw, 1.35rem);
-  font-weight: 600;
+  padding: 0.65rem 0.85rem;
+  font-size: 0.95rem;
+  font-weight: 500;
   color: #fff;
   text-decoration: none;
-  text-align: center;
-  border-radius: 10px;
-  background: rgba(46, 70, 161, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 7px;
+  transition: background 0.15s ease;
+
+  &:hover,
+  &:focus-visible {
+    background: rgba(255, 255, 255, 0.07);
+  }
 
   &:active {
-    opacity: 0.9;
+    opacity: 0.85;
   }
 `;
 

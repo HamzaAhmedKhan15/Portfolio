@@ -1,3 +1,5 @@
+/** @format */
+
 import React from "react";
 import Typed from "react-typed";
 import styled from "styled-components";
@@ -6,16 +8,16 @@ import { Slide } from "react-awesome-reveal";
 import github from "../../assets/images/github.png";
 import linkedin from "../../assets/images/linkedin.png";
 import whatsapp from "../../assets/images/whatsapp.png";
-import '../../assets/css/mycss.css';
-
+import "../../assets/css/mycss.css";
 
 const ProfComponent = () => {
   return (
     <Container id="home">
       <Texts>
         <Slide direction="left">
+          <WelcomeKicker>Welcome to my Portfolio</WelcomeKicker>
           <h2>
-            Hello <span className="green">Welcome to my Portfolio!</span>
+            Turning <span className="green">Ideas</span> into <span className="green">Interfaces!</span>
           </h2>
           <h6 className="green2">Hamza Ahmed Khan</h6>
           <Typed
@@ -33,23 +35,21 @@ const ProfComponent = () => {
           />
           <br />
           <div className="button-container">
-          <button className="talk" style={{fontWeight:"bolder"}}>
-  <a
-    href="http://wa.me/+923008263067"
-    target="_blank"
-    rel="noopener noreferrer"
-    style={{ display: 'flex', alignItems: 'center' }} // Optional, for better alignment
-  >
-    Let's talk 
-
-    <img
-      src={whatsapp}
-      alt="WhatsApp Logo"
-      style={{ width: '17px', height: '17px', marginLeft: '8px' }} // Adjust size and spacing as needed
-    />
-  </a>
-</button>
-
+            <button className="talk" style={{ fontWeight: "bolder" }}>
+              <a
+                href="http://wa.me/+923008263067"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ display: "flex", alignItems: "center" }} // Optional, for better alignment
+              >
+                Let's talk
+                <img
+                  src={whatsapp}
+                  alt="WhatsApp Logo"
+                  style={{ width: "17px", height: "17px", marginLeft: "8px" }} // Adjust size and spacing as needed
+                />
+              </a>
+            </button>
           </div>
           <Social>
             <h4>Connect me</h4>
@@ -79,17 +79,22 @@ const ProfComponent = () => {
         </Slide>
       </Texts>
       <Profile>
-          <img
-            src={`${process.env.PUBLIC_URL}/MyNewPicture.jpg`}
-            alt="profile"
-            className="l-10"
-          />
+        <img src={`${process.env.PUBLIC_URL}/MyNewPicture.jpg`} alt="profile" className="l-10" />
       </Profile>
     </Container>
   );
 };
 
 export default ProfComponent;
+
+const WelcomeKicker = styled.p`
+  font-size: clamp(0.65rem, 1.3vw, 0.78rem);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0 0 0.4rem;
+`;
 
 const Container = styled.div`
   display: flex;
@@ -130,9 +135,18 @@ const Texts = styled.div`
   }
 
   h2 {
-    font-size: clamp(1.1rem, 2.8vw, 1.5rem);
+    font-size: clamp(1rem, 2.6vw, 1.4rem);
+    line-height: 1.25;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    margin-bottom: 0.5rem;
     overflow-wrap: anywhere;
     word-break: break-word;
+
+    .green {
+      color: #5b7cfa;
+      text-shadow: 0 0 18px rgba(91, 124, 250, 0.35);
+    }
   }
 
   h4 {
@@ -167,9 +181,9 @@ const Texts = styled.div`
     color: #fff;
     font-weight: 800;
     filter: drop-shadow(0px 10px 10px #2e46a133);
-      :hover {
-        filter: drop-shadow(0px 10px 10px #2e46a146);
-      }
+    :hover {
+      filter: drop-shadow(0px 10px 10px #2e46a146);
+    }
   }
 `;
 

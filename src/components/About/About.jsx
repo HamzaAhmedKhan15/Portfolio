@@ -1,3 +1,5 @@
+/** @format */
+
 import React from "react";
 import styled from "styled-components";
 import { Slide } from "react-awesome-reveal";
@@ -15,29 +17,23 @@ const Aboutme = () => {
             </h1>
             <Bio>
               <p>
-                I am Hamza Ahmed Khan, a Frontend Developer based in Karachi, Pakistan,
-                focused on building scalable, responsive, and user-centered web
-                applications with React.js and Next.js. I enjoy translating complex
-                requirements into clear interfaces—whether that is multi-step admin
-                workflows, nested routing, or data-heavy dashboards—while keeping
-                performance and maintainability in mind.
+                I am Hamza Ahmed Khan, a Frontend Developer based in Karachi, Pakistan, focused on building scalable,
+                responsive, and user-centered web applications with React.js and Next.js. I enjoy translating complex
+                requirements into clear interfaces—whether that is multi-step admin workflows, nested routing, or
+                data-heavy dashboards—while keeping performance and maintainability in mind.
               </p>
               <p>
-                I hold a Bachelor of Computer Science and Information Technology from
-                NED University of Engineering and Technology (2020–2024, graduated July
-                2024). Professionally, I am a Frontend Developer at Quanrio LLP,
-                where I contribute to live production systems: customized rich-text
-                publishing, advanced state with Redux Toolkit, IndexedDB-based offline
-                access, and payment gateway integration, working closely with clients to
-                refine scope and ship features on schedule. Previously, I completed a
-                Frontend Developer internship at Transviti Pvt. Ltd., enhancing TalentVare
-                with React and Material UI, integrating APIs with Fetch, and stabilizing
-                application state with Redux.
+                I hold a Bachelors of Computer Science and Information Technology Degree from NED University of
+                Engineering and Technology (2020–2024, graduated July 2024). Professionally, I am a Frontend Developer
+                at Quanrio LLP, where I contribute to live production systems: customized rich-text publishing, advanced
+                state with Redux Toolkit, IndexedDB-based offline access, and payment gateway integration, working
+                closely with clients to refine scope and ship features on schedule. Previously, I completed a Frontend
+                Developer internship at Transviti Pvt. Ltd., enhancing TalentVare with React and Material UI,
+                integrating APIs with Fetch, and stabilizing application state with Redux.
               </p>
               <p>
-                Across projects—from scholarship portals to large SaaS-style modules—I
-                emphasize collaboration with backend engineers, disciplined debugging,
-                and polished UI delivery on desktop, tablet, and mobile.
+                Across projects—from scholarship portals to large SaaS-style modules—I emphasize collaboration with
+                backend engineers, disciplined debugging, and polished UI delivery on desktop, tablet, and mobile.
               </p>
             </Bio>
           </CenteredContainer>

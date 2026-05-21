@@ -99,8 +99,22 @@ const Intro = styled.p`
 `;
 
 const Cards = styled.div`
+  --card-gap: clamp(0.75rem, 2vw, 1.25rem);
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
   margin-top: clamp(2rem, 4vw, 3rem);
-  gap: clamp(0.75rem, 2vw, 1.25rem);
+  gap: var(--card-gap);
+
+  /* Tablet/iPad: lock to 2 columns and center the orphan 3rd card on its
+     own row. Wider than one column so it fills the row more visually. */
+  @media (min-width: 641px) and (max-width: 1024px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    & > *:nth-child(3):last-child {
+      grid-column: 1 / -1;
+      justify-self: center;
+      width: min(100%, 72%);
+      max-width: 100%;
+    }
+  }
 `;

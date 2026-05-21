@@ -9,7 +9,7 @@ import { FaRocket } from "react-icons/fa";
 import { FiMail, FiPhoneCall } from "react-icons/fi";
 import { Slide, Zoom } from "react-awesome-reveal";
 import { IoLocationOutline } from "react-icons/io5";
-import foot from "../../assets/images/giff.gif";
+import foot from "../../assets/images/devgif.gif";
 import emailLogo from "../../assets/images/gmail.png"
 import "../../assets/css/mycss.css";
 import "animate.css";
@@ -28,6 +28,28 @@ function easeInOutQuart(t) {
 /** ~ease-in-out-quart — keep scroll and rocket motion aligned */
 const ROCKET_MOTION_EASING = "cubic-bezier(0.76, 0, 0.24, 1)";
 
+/**
+ * Static rocket-fly keyframe — defined once at module scope so styled-components
+ * injects it eagerly. Travel distance is parameterized via the --rocket-fly-dy
+ * CSS variable set on the flying-rocket element. Generating fresh keyframes per
+ * launch breaks injection timing in production builds and either skips the
+ * animation (no onAnimationEnd → no blast) or jumps without smooth interpolation.
+ */
+const flyKeyframes = keyframes`
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 1;
+  }
+  88% {
+    transform: translate3d(0, var(--rocket-fly-dy, 0px), 0) scale(0.94);
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(0, var(--rocket-fly-dy, 0px), 0) scale(0.35);
+    opacity: 0;
+  }
+`;
+
 const Footer = () => {
   const footerRef = useRef(null);
   const rocketBtnRef = useRef(null);
@@ -40,6 +62,15 @@ const Footer = () => {
   const [topBlast, setTopBlast] = useState(null);
 
   const scrollRafRef = useRef(null);
+  /** Safety net: triggers handleFlyEnd even if onAnimationEnd is missed in prod */
+  const flightFallbackRef = useRef(null);
+
+  const clearFlightFallback = useCallback(() => {
+    if (flightFallbackRef.current != null) {
+      clearTimeout(flightFallbackRef.current);
+      flightFallbackRef.current = null;
+    }
+  }, []);
 
   const cancelSmoothScroll = useCallback(() => {
     if (scrollRafRef.current != null) {
@@ -78,7 +109,13 @@ const Footer = () => {
     [cancelSmoothScroll]
   );
 
-  useEffect(() => () => cancelSmoothScroll(), [cancelSmoothScroll]);
+  useEffect(
+    () => () => {
+      cancelSmoothScroll();
+      clearFlightFallback();
+    },
+    [cancelSmoothScroll, clearFlightFallback]
+  );
 
   useEffect(() => {
     const el = footerRef.current;
@@ -102,6 +139,7 @@ const Footer = () => {
   }, []);
 
   const handleFlyEnd = useCallback(() => {
+    clearFlightFallback();
     setFlight((current) => {
       if (!current) return null;
       const rocketSize = current.size;
@@ -135,7 +173,7 @@ const Footer = () => {
 
       return null;
     });
-  }, []);
+  }, [clearFlightFallback]);
 
   const launchRocket = useCallback(() => {
     const btn = rocketBtnRef.current;
@@ -143,19 +181,17 @@ const Footer = () => {
 
     const r = btn.getBoundingClientRect();
     const size = r.width;
-    const S =
-      window.scrollY ??
-      document.documentElement.scrollTop ??
-      document.body.scrollTop ??
-      0;
 
     const anchor = document.getElementById(RESUME_BLAST_ANCHOR_ID);
     const ar = anchor?.getBoundingClientRect();
     const MIN_TOP = 10;
 
+    /* Both the rocket (position: fixed during flight) and the resume anchor
+       (inside the position: fixed header Shell) live in viewport coordinates,
+       so dyTravel is a pure viewport delta — do NOT add window.scrollY. */
     let dyTravel;
     if (anchor && ar && ar.height > 0) {
-      const resumeCenterY = ar.top + S + ar.height / 2;
+      const resumeCenterY = ar.top + ar.height / 2;
       const rocketCenterY = r.top + size / 2;
       dyTravel = resumeCenterY - rocketCenterY;
       const minTranslate = MIN_TOP - r.top;
@@ -165,31 +201,24 @@ const Footer = () => {
       dyTravel = Math.max(fallbackTop - r.top, MIN_TOP - r.top);
     }
 
-    const flyKeyframes = keyframes`
-      0% {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-      }
-      88% {
-        transform: translateY(${dyTravel}px) scale(0.94);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(${dyTravel}px) scale(0.35);
-        opacity: 0;
-      }
-    `;
-
     setFlight({
       top: r.top,
       left: r.left,
       size,
-      flyKeyframes,
+      dyTravel,
       durationMs: ROCKET_FLIGHT_MS,
     });
 
+    /* Safety net: if onAnimationEnd is missed (prod keyframe injection edge
+       cases, tab blur, etc.), still trigger the blast so the UX completes. */
+    clearFlightFallback();
+    flightFallbackRef.current = window.setTimeout(
+      handleFlyEnd,
+      ROCKET_FLIGHT_MS + 120
+    );
+
     smoothScrollToTop(ROCKET_FLIGHT_MS);
-  }, [flight, smoothScrollToTop]);
+  }, [flight, smoothScrollToTop, clearFlightFallback, handleFlyEnd]);
 
   const showDockedRocket =
     footerVisible && !awaitingFooterReturn && !flight;
@@ -319,8 +348,8 @@ const Footer = () => {
           $top={flight.top}
           $left={flight.left}
           $size={flight.size}
-          $kf={flight.flyKeyframes}
           $durationMs={flight.durationMs ?? ROCKET_FLIGHT_MS}
+          style={{ "--rocket-fly-dy": `${flight.dyTravel}px` }}
           onAnimationEnd={(e) => {
             if (e.target === e.currentTarget) handleFlyEnd();
           }}
@@ -371,16 +400,17 @@ const MediaQueryWrapper = styled.div`
 `;
 
 const FooterGif = styled.img`
-  width: min(65%, 420px);
+  width: clamp(170px, 28vw, 400px);
   max-width: 100%;
   height: auto;
-  margin-left: clamp(0, 4vw, 60px);
-  margin-top: clamp(-2rem, -3vw, -0.5rem);
+  display: block;
+  /* GIFs can't carry true alpha — blend the dark navy backdrop into the
+     footer's dark bg so only the brighter monitor/character/hands read. */
+  mix-blend-mode: lighten;
+  isolation: isolate;
 
-  @media (max-width: 768px) {
-    width: min(92%, 380px);
-    margin-left: 0;
-    margin-top: 0;
+  @media (max-width: 650px) {
+    width: min(80%, 280px);
   }
 `;
 
@@ -493,6 +523,19 @@ const Profile = styled.div`
           color: #fff;
         }
       }
+
+      /* Mobile: keep Send Email inline with the icons (overrides the global
+         .button-container2 rule that forces it to width: 100% on small screens). */
+      @media (max-width: 650px) {
+        .button-container2 {
+          width: auto;
+          max-width: none;
+          margin-left: 0;
+          padding: 8px 14px;
+          flex: 0 0 auto;
+          white-space: nowrap;
+        }
+      }
     }
   }
 `;
@@ -526,10 +569,23 @@ const Form = styled.div`
   width: 100%;
   max-width: min(100%, 520px);
   margin-inline: auto;
+  display: flex;
+  justify-content: center;
 
+  /* Tablet+ : lift the GIF up to sit on the same horizontal line as the
+     "Contact Me" heading, anchored to the top-right of the footer container.
+     The 'top' value mirrors Container's padding-top so the GIF's top edge
+     aligns with the heading. Right offset leaves room for the docked rocket. */
   @media (min-width: 651px) {
-    margin-inline: 0;
+    position: absolute;
+    top: clamp(1.5rem, 4vw, 2rem);
+    right: clamp(6rem, 10vw, 9rem);
+    flex: 0 0 auto;
+    width: auto;
     max-width: none;
+    margin: 0;
+    z-index: 1;
+    pointer-events: none;
   }
   h1 {
     font-size: 1.3rem;
@@ -742,9 +798,12 @@ const FlyingRocketFlightWrap = styled.div`
   flex-direction: column;
   align-items: center;
   overflow: visible;
-  animation: ${(p) => p.$kf} ${(p) => p.$durationMs ?? ROCKET_FLIGHT_MS}ms
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+  animation: ${flyKeyframes} ${(p) => p.$durationMs ?? ROCKET_FLIGHT_MS}ms
     ${ROCKET_MOTION_EASING} forwards;
-  transform: translateZ(0);
 `;
 
 const FlyingRocketCircle = styled.div`
